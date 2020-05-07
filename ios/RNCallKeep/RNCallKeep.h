@@ -37,4 +37,6 @@ continueUserActivity:(NSUserActivity *)userActivity
 
 + (void)endCallWithUUID:(NSString *)uuidString
                  reason:(int)reason;
++ (BOOL) getIsSetup;
++ (CXProvider *) getProvider;
 @end

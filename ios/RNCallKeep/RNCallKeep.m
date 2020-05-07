@@ -50,9 +50,11 @@ RCT_EXPORT_MODULE()
 #ifdef DEBUG
     NSLog(@"[RNCallKeep][init]");
 #endif
+    _isSetup = NO;
     if (self = [super init]) {
         _isStartCallActionEventListenerAdded = NO;
     }
+    [RNCallKeep initCallKitProvider];
     return self;
 }
 
@@ -99,8 +101,17 @@ RCT_EXPORT_MODULE()
 + (void)initCallKitProvider {
     if (sharedProvider == nil) {
         NSDictionary *settings = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"RNCallKeepSettings"];
-        sharedProvider = [[CXProvider alloc] initWithConfiguration:[RNCallKeep getProviderConfiguration:settings]];
+        if(settings != nil) {
+            sharedProvider = [[CXProvider alloc] initWithConfiguration:[RNCallKeep getProviderConfiguration:settings]];
+        }
     }
+}
+static BOOL _isSetup;
++ (BOOL) getIsSetup {
+    return _isSetup;
+}
++ (CXProvider *) getProvider {
+    return sharedProvider;
 }
 
 RCT_EXPORT_METHOD(setup:(NSDictionary *)options)
@@ -119,6 +130,7 @@ RCT_EXPORT_METHOD(setup:(NSDictionary *)options)
 
     self.callKeepProvider = sharedProvider;
     [self.callKeepProvider setDelegate:self queue:nil];
+    _isSetup = YES;
 }
 
 RCT_REMAP_METHOD(checkIfBusy,
