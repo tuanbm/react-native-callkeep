@@ -43,7 +43,7 @@ export default class RNCallKeep {
 
   }
 
-  static removeEventListener(type: Events, handler: (args: any) => void) {
+  static removeEventListener(type: Events) {
 
   }
 
@@ -114,7 +114,9 @@ export default class RNCallKeep {
   static setReachable() {
 
   }
+  static isCallActive(uuid: string): Promise<boolean> {
 
+  }
   /**
      * @description supportConnectionService method is available only on Android.
   */

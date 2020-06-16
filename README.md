@@ -139,6 +139,21 @@ RNCallKeep.setCurrentCallActive(uuid);
 - `uuid`: string
   - The `uuid` used for `startCall` or `displayIncomingCall`
 
+### isCallActive
+_This feature is available only on IOS._
+
+Returns true if the UUID passed matches an existing and answered call. 
+This will return true ONLY if the call exists and the user has already answered the call. It will return false 
+if the call does not exist or has not been answered. This is exposed to both React Native and Native sides.
+This was exposed so a call can be canceled if ringing and the user answered on a different device.
+
+```js
+RNCallKeep.isCallActive(uuid);
+```
+
+- `uuid`: string
+  - The `uuid` used for `startCall` or `displayIncomingCall`
+
 ### displayIncomingCall
 
 Display system UI for incoming calls
@@ -513,6 +528,14 @@ So we have to check if the application is reachable before making a call from th
 RNCallKeep.addEventListener('checkReachability', () => {
   RNCallKeep.setReachable();
 });
+
+```
+### removeEventListener
+
+Allows to remove the listener on an event.
+
+```js
+RNCallKeep.removeEventListener('checkReachability');
 ```
 
 ## Example
@@ -665,9 +688,7 @@ Since iOS 13, you'll have to report the incoming calls that wakes up your applic
   // NSString *handle = @"caller number here";
   // NSDictionary *extra = [payload.dictionaryPayload valueForKeyPath:@"custom.path.to.data"]; /* use this to pass any special data (ie. from your notification) down to RN. Can also be `nil` */
 
-  [RNCallKeep reportNewIncomingCall:uuid handle:handle handleType:@"generic" hasVideo:false localizedCallerName:callerName fromPushKit: YES payload:extra];
-
-  completion();
+  [RNCallKeep reportNewIncomingCall:uuid handle:handle handleType:@"generic" hasVideo:false localizedCallerName:callerName fromPushKit: YES payload:extra withCompletionHandler:completion];
 }
 ```
 
